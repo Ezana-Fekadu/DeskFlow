@@ -12,7 +12,8 @@ db.serialize(() => {
     db.run(`CREATE TABLE IF NOT EXISTS Users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
-        role TEXT NOT NULL
+        role TEXT NOT NULL,
+        password TEXT NOT NULL
     )`);
 
     db.run(`CREATE TABLE IF NOT EXISTS Residents (
