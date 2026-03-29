@@ -10,82 +10,114 @@ const log = (operation, response) => {
 
 const testCRUD = async () => {
   try {
-    // ----------- CHECKINS -----------
-    // CREATE
-    let res = await axios.post(`${BASE_URL}/checkins`, {
-      resident_id: 1,
-      clerk_id: 1,
+    // ----------- USERS CRUD -----------
+    let res = await axios.post(`${BASE_URL}/users`, { name: "Alice Clerk", role: "Clerk" });
+    const clerkId = res.data.id;
+    log("User CREATE (Clerk)", res);
+
+    res = await axios.post(`${BASE_URL}/users`, { name: "Bob RA", role: "RA" });
+    const raId = res.data.id;
+    log("User CREATE (RA)", res);
+
+    res = await axios.get(`${BASE_URL}/users`);
+    log("User READ ALL", res);
+
+    res = await axios.put(`${BASE_URL}/users/${clerkId}`, { name: "Alice Clerk Updated", role: "Clerk" });
+    log("User UPDATE", res);
+
+    res = await axios.get(`${BASE_URL}/users/${clerkId}`);
+    log("User READ SINGLE", res);
+
+    // Optional: delete one user
+    // res = await axios.delete(`${BASE_URL}/users/${raId}`);
+    // log("User DELETE", res);
+
+    // ----------- RESIDENTS CRUD -----------
+    res = await axios.post(`${BASE_URL}/residents`, { name: "John Doe", room: "101A" });
+    const resident1Id = res.data.id;
+    log("Resident CREATE (John Doe)", res);
+
+    res = await axios.post(`${BASE_URL}/residents`, { name: "Jane Smith", room: "102B" });
+    const resident2Id = res.data.id;
+    log("Resident CREATE (Jane Smith)", res);
+
+    res = await axios.get(`${BASE_URL}/residents`);
+    log("Resident READ ALL", res);
+
+    res = await axios.put(`${BASE_URL}/residents/${resident1Id}`, { name: "John Doe Updated", room: "101A" });
+    log("Resident UPDATE", res);
+
+    res = await axios.get(`${BASE_URL}/residents/${resident1Id}`);
+    log("Resident READ SINGLE", res);
+
+    // Optional: delete one resident
+    // res = await axios.delete(`${BASE_URL}/residents/${resident2Id}`);
+    // log("Resident DELETE", res);
+
+    // ----------- CHECKINS CRUD -----------
+    res = await axios.post(`${BASE_URL}/checkins`, {
+      resident_id: resident1Id,
+      clerk_id: clerkId,
       check_in_time: new Date().toISOString(),
     });
     const checkInId = res.data.id;
     log("CheckIn CREATE", res);
 
-    // READ
     res = await axios.get(`${BASE_URL}/checkins`);
     log("CheckIn READ", res);
 
-    // UPDATE
     res = await axios.put(`${BASE_URL}/checkins/${checkInId}`, {
       check_out_time: new Date().toISOString(),
     });
     log("CheckIn UPDATE", res);
 
-    // DELETE
     res = await axios.delete(`${BASE_URL}/checkins/${checkInId}`);
     log("CheckIn DELETE", res);
 
-    // ----------- ITEMS -----------
-    // CREATE
+    // ----------- ITEMS CRUD -----------
     res = await axios.post(`${BASE_URL}/items`, {
       item_name: "Basketball",
-      borrower_id: 1,
+      borrower_id: resident1Id,
       checkout_time: new Date().toISOString(),
     });
     const itemId = res.data.id;
     log("Item CREATE", res);
 
-    // READ
     res = await axios.get(`${BASE_URL}/items`);
     log("Item READ", res);
 
-    // UPDATE
     res = await axios.put(`${BASE_URL}/items/${itemId}`, {
-      borrower_id: 1,
+      borrower_id: resident2Id,
       return_time: new Date().toISOString(),
     });
     log("Item UPDATE", res);
 
-    // DELETE
     res = await axios.delete(`${BASE_URL}/items/${itemId}`);
     log("Item DELETE", res);
 
-    // ----------- VIOLATIONS -----------
-    // CREATE
+    // ----------- VIOLATIONS CRUD -----------
     res = await axios.post(`${BASE_URL}/violations`, {
-      resident_id: 1,
-      clerk_id: 1,
+      resident_id: resident2Id,
+      clerk_id: raId,
       description: "Noise complaint",
       date: new Date().toISOString(),
     });
     const violationId = res.data.id;
     log("Violation CREATE", res);
 
-    // READ
     res = await axios.get(`${BASE_URL}/violations`);
     log("Violation READ", res);
 
-    // UPDATE
     res = await axios.put(`${BASE_URL}/violations/${violationId}`, {
       description: "Late night noise complaint",
       date: new Date().toISOString(),
     });
     log("Violation UPDATE", res);
 
-    // DELETE
     res = await axios.delete(`${BASE_URL}/violations/${violationId}`);
     log("Violation DELETE", res);
 
-    console.log("\nAll CRUD tests completed successfully!");
+    console.log("\nAll CRUD tests (including Users & Residents) completed successfully!");
   } catch (err) {
     console.error("Error during CRUD test:", err.response ? err.response.data : err.message);
   }

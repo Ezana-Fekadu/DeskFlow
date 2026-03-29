@@ -4,9 +4,9 @@ const db = require("../database");
 
 // ----------- CREATE RESIDENT -----------
 router.post("/", (req, res) => {
-  const { name, dorm_room } = req.body;
-  const sql = "INSERT INTO Residents (name, dorm_room) VALUES (?, ?)";
-  db.run(sql, [name, dorm_room], function (err) {
+  const { name, room } = req.body;
+  const sql = "INSERT INTO Residents (name, room) VALUES (?, ?)";
+  db.run(sql, [name, room], function (err) {
     if (err) return res.status(500).json({ error: err.message });
     res.json({ id: this.lastID });
   });
@@ -32,9 +32,9 @@ router.get("/:id", (req, res) => {
 
 // ----------- UPDATE RESIDENT -----------
 router.put("/:id", (req, res) => {
-  const { name, dorm_room } = req.body;
-  const sql = "UPDATE Residents SET name = ?, dorm_room = ? WHERE id = ?";
-  db.run(sql, [name, dorm_room, req.params.id], function (err) {
+  const { name, room } = req.body;
+  const sql = "UPDATE Residents SET name = ?, room = ? WHERE id = ?";
+  db.run(sql, [name, room, req.params.id], function (err) {
     if (err) return res.status(500).json({ error: err.message });
     res.json({ changes: this.changes });
   });
