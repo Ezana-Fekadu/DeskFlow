@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import CheckInForm from "./components/CheckInForm";
-import CheckInList from "./components/CheckInList";
-import Navbar from "./components/Navbar";
+import { useState } from "react";
+import CheckInForm from "../components/CheckInForm";
+import CheckInList from "../components/CheckInList";
+import Navbar from "../components/Navbar";
 
 function Dashboard() {
   const [newCheckIn, setNewCheckIn] = useState(null);

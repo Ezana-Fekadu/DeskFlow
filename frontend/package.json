@@ -1,0 +1,8 @@
+{
+  "name": "deskflow-frontend-root-wrapper",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "cd ../Deskflow && npm run dev"
+  }
+}

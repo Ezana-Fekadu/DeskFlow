@@ -1,5 +1,15 @@
-app.put("/api/auth/password", async (req, res) => {
+const express = require("express");
+const bcrypt = require("bcrypt");
+const db = require("../../database");
+
+const router = express.Router();
+
+router.put("/", async (req, res) => {
   const { userId, oldPassword, newPassword } = req.body;
+  if (!userId || !oldPassword || !newPassword) {
+    return res.status(400).json({ error: "userId, oldPassword, and newPassword are required" });
+  }
+
   db.get("SELECT * FROM Users WHERE id = ?", [userId], async (err, user) => {
     if (err) return res.status(500).json({ error: err.message });
     if (!user) return res.status(400).json({ error: "User not found" });
@@ -14,3 +24,5 @@ app.put("/api/auth/password", async (req, res) => {
     });
   });
 });
+
+module.exports = router;

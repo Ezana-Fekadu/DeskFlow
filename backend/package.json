@@ -1,0 +1,8 @@
+{
+  "name": "deskflow-backend-root-wrapper",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "cd ../Deskflow/src/Backend && npm run dev"
+  }
+}

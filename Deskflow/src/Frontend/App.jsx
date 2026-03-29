@@ -1,14 +1,14 @@
-import React, { useState } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { useState } from "react";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
+import ChangePassword from "./pages/ChangePassword";
+import Dashboard from "./pages/Dashboard";
+import ForgotPassword from "./pages/ForgotPassword";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
 
 function App() {
-  // Initialize user from localStorage safely
-  // const [user, setUser] = useState(() => {
-    const [user] = useState(() => {
+  const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
   });
@@ -16,18 +16,25 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Redirect logged-in users from login/register */}
         <Route
           path="/"
-          element={user ? <Navigate to="/dashboard" /> : <Login />}
+          element={user ? <Navigate to="/dashboard" /> : <Login setUser={setUser} />}
         />
         <Route
           path="/register"
-          element={user ? <Navigate to="/dashboard" /> : <Register />}
+          element={user ? <Navigate to="/dashboard" /> : <Register setUser={setUser} />}
         />
         <Route
           path="/dashboard"
           element={user ? <Dashboard /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/change-password"
+          element={user ? <ChangePassword /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/forgot-password"
+          element={<ForgotPassword />}
         />
       </Routes>
     </BrowserRouter>

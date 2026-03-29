@@ -1,7 +1,12 @@
+const express = require("express");
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const SECRET = "your_jwt_secret"; // store securely in env in production
+const db = require("../../database");
 
-app.post("/api/auth/login", (req, res) => {
+const router = express.Router();
+const SECRET = process.env.JWT_SECRET || "your_jwt_secret";
+
+router.post("/", (req, res) => {
   const { name, password } = req.body;
   db.get("SELECT * FROM Users WHERE name = ?", [name], async (err, user) => {
     if (err) return res.status(500).json({ error: err.message });
@@ -14,3 +19,5 @@ app.post("/api/auth/login", (req, res) => {
     res.json({ token, user: { id: user.id, name: user.name, role: user.role } });
   });
 });
+
+module.exports = router;
