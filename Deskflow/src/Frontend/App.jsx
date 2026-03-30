@@ -26,7 +26,7 @@ function App() {
         />
         <Route
           path="/dashboard"
-          element={user ? <Dashboard /> : <Navigate to="/" />}
+          element={user ? <Dashboard user={user} setUser={setUser} /> : <Navigate to="/" />}
         />
         <Route
           path="/change-password"
@@ -36,6 +36,7 @@ function App() {
           path="/forgot-password"
           element={<ForgotPassword />}
         />
+        <Route path="*" element={<Navigate to={user ? "/dashboard" : "/"} />} />
       </Routes>
     </BrowserRouter>
   );

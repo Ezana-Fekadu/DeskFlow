@@ -1,8 +1,6 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-const BASE_URL = "http://localhost:5000/api";
+import api from "../api";
 
 function ChangePassword() {
   const [oldPassword, setOldPassword] = useState("");
@@ -20,30 +18,41 @@ function ChangePassword() {
 
   const handleChange = async (e) => {
     e.preventDefault();
+    if (!oldPassword || !newPassword) {
+      return setError("Both current and new passwords are required.");
+    }
+    if (newPassword.length < 6) {
+      return setError("New password must be at least 6 characters.");
+    }
+    if (oldPassword === newPassword) {
+      return setError("New password must be different from the current password.");
+    }
+
     try {
-      const res = await axios.put(`${BASE_URL}/auth/password`, {
+      const res = await api.put("/auth/password", {
         userId: user.id,
         oldPassword,
         newPassword,
       });
-      setMessage(res.data.message || "Password updated successfully");
+      setMessage(res.data.message || "Password updated successfully.");
       setError("");
       setOldPassword("");
       setNewPassword("");
       setTimeout(() => navigate("/dashboard"), 1200);
     } catch (err) {
-      setError(err.response?.data?.error || "Unable to update password");
+      setError(err.response?.data?.error || "Unable to update password.");
       setMessage("");
     }
   };
 
   return (
-    <div>
+    <div className="page-card form-card">
       <h2>Change Password</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {message && <p style={{ color: "green" }}>{message}</p>}
-      <form onSubmit={handleChange}>
+      {error && <div className="alert alert-error">{error}</div>}
+      {message && <div className="alert alert-success">{message}</div>}
+      <form className="form-grid" onSubmit={handleChange}>
         <input
+          className="input-field"
           type="password"
           placeholder="Current password"
           value={oldPassword}
@@ -51,13 +60,16 @@ function ChangePassword() {
           required
         />
         <input
+          className="input-field"
           type="password"
           placeholder="New password"
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
           required
         />
-        <button type="submit">Update Password</button>
+        <button className="btn btn-primary" type="submit">
+          Update Password
+        </button>
       </form>
     </div>
   );
