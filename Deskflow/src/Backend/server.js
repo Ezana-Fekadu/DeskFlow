@@ -16,12 +16,14 @@ const PORT = 5000;
 app.use(cors());
 app.use(bodyParser.json());
 
+const auth = require("./middleware/auth");
+
 app.use("/api/auth", authRoutes);
-app.use("/api/checkins", checkinsRoutes);
-app.use("/api/items", itemsRoutes);
-app.use("/api/violations", violationsRoutes);
-app.use("/api/users", usersRouter);
-app.use("/api/residents", residentsRouter);
+app.use("/api/checkins", auth, checkinsRoutes);
+app.use("/api/items", auth, itemsRoutes);
+app.use("/api/violations", auth, violationsRoutes);
+app.use("/api/users", auth, usersRouter);
+app.use("/api/residents", auth, residentsRouter);
 const visitorsRouter = require("./routes/visitors");
 app.use("/api/visitors", visitorsRouter);
 

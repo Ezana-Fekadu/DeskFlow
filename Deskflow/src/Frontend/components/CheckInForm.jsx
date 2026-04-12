@@ -3,21 +3,22 @@ import api from "../api";
 
 const CheckInForm = ({ onNewCheckIn }) => {
   const [residentId, setResidentId] = useState("");
-  const [clerkId, setClerkId] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const resident = Number(residentId);
-    const clerk = Number(clerkId);
+    const clerk = user.id;
 
     if (!resident || resident <= 0) {
       return setError("Resident ID must be a positive number.");
     }
-    if (!clerk || clerk <= 0) {
-      return setError("Clerk ID must be a positive number.");
+    if (!clerk) {
+      return setError("User not logged in.");
     }
 
     try {
@@ -30,7 +31,6 @@ const CheckInForm = ({ onNewCheckIn }) => {
       setSuccess("Check-in created successfully.");
       setError("");
       setResidentId("");
-      setClerkId("");
     } catch (err) {
       setError(err.response?.data?.error || "Error creating check-in.");
       setSuccess("");
@@ -49,14 +49,6 @@ const CheckInForm = ({ onNewCheckIn }) => {
           placeholder="Resident ID"
           value={residentId}
           onChange={(e) => setResidentId(e.target.value)}
-          required
-        />
-        <input
-          className="input-field"
-          type="number"
-          placeholder="Clerk ID"
-          value={clerkId}
-          onChange={(e) => setClerkId(e.target.value)}
           required
         />
         <button className="btn btn-primary" type="submit">

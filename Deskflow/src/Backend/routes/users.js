@@ -2,15 +2,7 @@ const express = require("express");
 const router = express.Router();
 const db = require("../database");
 
-// ----------- CREATE USER -----------
-router.post("/", (req, res) => {
-  const { name, role } = req.body;
-  const sql = "INSERT INTO Users (name, role) VALUES (?, ?)";
-  db.run(sql, [name, role], function (err) {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json({ id: this.lastID });
-  });
-});
+
 
 // ----------- READ ALL USERS -----------
 router.get("/", (req, res) => {

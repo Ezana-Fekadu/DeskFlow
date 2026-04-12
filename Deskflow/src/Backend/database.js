@@ -63,19 +63,6 @@ db.run(`CREATE TABLE IF NOT EXISTS Violations (
         FOREIGN KEY(clerk_id) REFERENCES Users(id)
     )`);
 
-    db.run(`ALTER TABLE Residents ADD COLUMN status TEXT DEFAULT 'active'`);
-
-    db.run(`CREATE TABLE IF NOT EXISTS Visitors (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT NOT NULL,
-        host_resident_id INTEGER,
-        time_in DATETIME,
-        time_out DATETIME,
-        clerk_id INTEGER NOT NULL,
-        FOREIGN KEY(host_resident_id) REFERENCES Residents(id),
-        FOREIGN KEY(clerk_id) REFERENCES Users(id)
-    )`);
-
     db.run(`CREATE TABLE IF NOT EXISTS Audit (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER NOT NULL,
