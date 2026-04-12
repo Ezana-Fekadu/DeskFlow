@@ -3,6 +3,7 @@ import CheckInForm from "../components/CheckInForm";
 import CheckInList from "../components/CheckInList";
 import ItemList from "../components/ItemList";
 import Navbar from "../components/Navbar";
+import VisitorForm from "../components/VisitorForm";
 import VisitorList from "../components/VisitorList";
 
 function Dashboard({ user, setUser }) {
