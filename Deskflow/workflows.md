@@ -1,64 +1,37 @@
 # DeskFlow User Workflows
+*Professional Documentation for Deliverable 1*
 
-**Deliverable 1 Features Tested**
+## 1. User Registration & Login
+1. Navigate to DeskFlow app
+2. Click "Create new account" → Register
+3. Enter Name/Password → Submit
+4. Login with credentials → Dashboard
 
-## 1. User Authentication
+## 2. Resident Check-in Flow
+1. Dashboard → Enter Resident ID (e.g. 1)
+2. Click "Check In"
+3. **Modal**: "Visitors with Resident?"
+   - Skip → CheckInList updates
+   - Log Visitor: Name/Host/Clerk → VisitorList timer
+4. **Optional**: ItemList → Checkout item → Timer starts
 
-### Registration Workflow
-1. Navigate to `http://localhost:5173/register`
-2. Enter **Name** (min 3 chars), **Password** (min 6 chars)
-3. Select **Role** (Clerk, RA, or default User)
-4. Click **Register**
-5. Expected: Password hashed with bcrypt, user stored in DB, redirect to Dashboard, token in localStorage
+## 3. Active Lists (Real-time)
+- **CheckInList**: Active residents (checkout pending)
+- **VisitorList**: Today's visitors w/ midnight countdown
+- **ItemList**: Checked out items w/ midnight countdown
 
-### Login Workflow
-1. Navigate to `http://localhost:5173/` 
-2. Enter **Name**, **Password**
-3. Click **Login**
-4. Expected: JWT token issued, user in localStorage, redirect Dashboard
-5. Error handling: Invalid creds show error message
+## 4. Logout
+1. Navbar → "Logout" → Redirect login
 
-### Logout Workflow
-1. Dashboard → Navbar → **Logout**
-2. Expected: Storage cleared, redirect Login
+## 5. Admin (RA/Clerk Roles)
+- All flows same (role-based UI later)
 
-## 2. Desk Check-In Management
+**Timers**: Midnight auto-expire (FE logic).
 
-### Create Check-In
-1. Login as Clerk (e.g. create user ID 25 via testCRUD)
-2. Dashboard → CheckInForm
-3. Enter **Resident ID** (e.g. 9), **Clerk ID** (25)
-4. Click **Check In**
-5. Expected: POST /api/checkins, success alert, list updates
+**Demo**: http://localhost:5173
 
-### View Check-Ins
-1. Dashboard → CheckInList
-2. Expected: GET /api/checkins shows all with times
+**GitHub**: github.com/username/DeskFlow
 
-### Checkout/Update
-(Via PUT /api/checkins/:id in code)
+---
 
-## 3. Admin CRUD Operations (Tested via script)
-
-**Run `node src/Backend/tests/testCRUD.js` with server running:**
-
-- **Users**: CREATE Alice Clerk/RA, READ/UPDATE/DELETE
-- **Residents**: CREATE John/Jane, READ/UPDATE
-- **CheckIns**: Full CRUD with FKs
-- **Items**: Borrow Basketball, UPDATE return
-- **Violations**: Noise complaint, UPDATE
-
-All pass ✅ Data persists in deskflow.db
-
-## 4. Testing Summary
-
-- **Backend**: Express CRUD routes (open, no auth), SQLite OK
-- **Frontend**: React Router auth flow, Tailwind UI, Axios API
-- **Issues Fixed**: Server started for tests
-- **Unit Tests**: Added checkins.test.js (run `npm test` in Backend)
-- **Stack**: Backend port 5000, Frontend Vite (run `npm run dev` root)
-
-**Submission Ready**: Push GitHub, print this to PDF for Canvas.
-
-**Tested Date**: April 2026 (DB timestamps)
-
+*Print/Save as PDF for Canvas submission*
