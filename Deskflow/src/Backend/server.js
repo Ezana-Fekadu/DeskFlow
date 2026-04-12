@@ -1,5 +1,5 @@
 const express = require("express");
-const bodyParser = require("body-parser");
+
 const cors = require("cors");
 
 const db = require("./database");
@@ -14,7 +14,7 @@ const app = express();
 const PORT = 5000;
 
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
 
 const auth = require("./middleware/auth");
 

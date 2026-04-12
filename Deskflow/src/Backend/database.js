@@ -14,14 +14,18 @@ db.serialize(() => {
         name TEXT NOT NULL,
         role TEXT NOT NULL,
         password TEXT NOT NULL
-    )`);
+    )`, (err) => {
+        if (err) console.error("Users table error:", err.message);
+    });
 
     db.run(`CREATE TABLE IF NOT EXISTS Residents (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         room TEXT NOT NULL,
         email TEXT
-    )`);
+    )`, (err) => {
+        if (err) console.error("Residents table error:", err.message);
+    });
 
     db.run(`CREATE TABLE IF NOT EXISTS CheckIns (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -31,7 +35,9 @@ db.serialize(() => {
         check_out_time DATETIME,
         FOREIGN KEY(resident_id) REFERENCES Residents(id),
         FOREIGN KEY(clerk_id) REFERENCES Users(id)
-    )`);
+    )`, (err) => {
+        if (err) console.error("CheckIns table error:", err.message);
+    });
 
     db.run(`CREATE TABLE IF NOT EXISTS Items (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -40,9 +46,11 @@ db.serialize(() => {
         checkout_time DATETIME,
         return_time DATETIME,
         FOREIGN KEY(borrower_id) REFERENCES Residents(id)
-    )`);
+    )`, (err) => {
+        if (err) console.error("Items table error:", err.message);
+    });
 
-db.run(`CREATE TABLE IF NOT EXISTS Violations (
+    db.run(`CREATE TABLE IF NOT EXISTS Violations (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         resident_id INTEGER NOT NULL,
         clerk_id INTEGER NOT NULL,
@@ -50,7 +58,9 @@ db.run(`CREATE TABLE IF NOT EXISTS Violations (
         date DATETIME,
         FOREIGN KEY(resident_id) REFERENCES Residents(id),
         FOREIGN KEY(clerk_id) REFERENCES Users(id)
-    )`);
+    )`, (err) => {
+        if (err) console.error("Violations table error:", err.message);
+    });
 
     db.run(`CREATE TABLE IF NOT EXISTS Visitors (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -61,7 +71,9 @@ db.run(`CREATE TABLE IF NOT EXISTS Violations (
         clerk_id INTEGER NOT NULL,
         FOREIGN KEY(host_resident_id) REFERENCES Residents(id),
         FOREIGN KEY(clerk_id) REFERENCES Users(id)
-    )`);
+    )`, (err) => {
+        if (err) console.error("Visitors table error:", err.message);
+    });
 
     db.run(`CREATE TABLE IF NOT EXISTS Audit (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -73,7 +85,9 @@ db.run(`CREATE TABLE IF NOT EXISTS Violations (
         new_data TEXT,
         timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY(user_id) REFERENCES Users(id)
-    )`);
+    )`, (err) => {
+        if (err) console.error("Audit table error:", err.message);
+    });
 });
 
 module.exports = db;

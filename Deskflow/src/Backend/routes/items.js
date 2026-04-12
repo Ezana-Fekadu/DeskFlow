@@ -36,7 +36,7 @@ router.put("/:id", (req, res) => {
 router.delete("/:id", (req, res) => {
     const { id } = req.params;
     const sql = `DELETE FROM Items WHERE id = ?`;
-    db.run(sql, id, function(err) {
+    db.run(sql, [id], function(err) {
         if (err) return res.status(400).json({ error: err.message });
         res.json({ deleted: this.changes });
     });
