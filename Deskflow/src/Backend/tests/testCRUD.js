@@ -28,10 +28,6 @@ const testCRUD = async () => {
     res = await axios.get(`${BASE_URL}/users/${clerkId}`);
     log("User READ SINGLE", res);
 
-    // Optional: delete one user
-    // res = await axios.delete(`${BASE_URL}/users/${raId}`);
-    // log("User DELETE", res);
-
     // ----------- RESIDENTS CRUD -----------
     res = await axios.post(`${BASE_URL}/residents`, { name: "John Doe", room: "101A" });
     const resident1Id = res.data.id;
@@ -49,10 +45,6 @@ const testCRUD = async () => {
 
     res = await axios.get(`${BASE_URL}/residents/${resident1Id}`);
     log("Resident READ SINGLE", res);
-
-    // Optional: delete one resident
-    // res = await axios.delete(`${BASE_URL}/residents/${resident2Id}`);
-    // log("Resident DELETE", res);
 
     // ----------- CHECKINS CRUD -----------
     res = await axios.post(`${BASE_URL}/checkins`, {
@@ -117,7 +109,28 @@ const testCRUD = async () => {
     res = await axios.delete(`${BASE_URL}/violations/${violationId}`);
     log("Violation DELETE", res);
 
-    console.log("\nAll CRUD tests (including Users & Residents) completed successfully!");
+    // ----------- VISITORS CRUD -----------
+    res = await axios.post(`${BASE_URL}/visitors`, {
+      name: "Guest Visitor",
+      host_resident_id: resident1Id,
+      time_in: new Date().toISOString(),
+    });
+    const visitorId = res.data.id;
+    log("Visitor CREATE", res);
+
+    res = await axios.get(`${BASE_URL}/visitors`);
+    log("Visitor READ", res);
+
+    res = await axios.put(`${BASE_URL}/visitors/${visitorId}`, {
+      time_out: new Date().toISOString(),
+    });
+    log("Visitor UPDATE", res);
+
+    res = await axios.delete(`${BASE_URL}/visitors/${visitorId}`);
+    log("Visitor DELETE", res);
+
+    console.log("\nAll CRUD tests (including Visitors) completed successfully!");
+
   } catch (err) {
     console.error("Error during CRUD test:", err.response ? err.response.data : err.message);
   }

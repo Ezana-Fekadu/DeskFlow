@@ -42,7 +42,7 @@ db.serialize(() => {
         FOREIGN KEY(borrower_id) REFERENCES Residents(id)
     )`);
 
-    db.run(`CREATE TABLE IF NOT EXISTS Violations (
+db.run(`CREATE TABLE IF NOT EXISTS Violations (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         resident_id INTEGER NOT NULL,
         clerk_id INTEGER NOT NULL,
@@ -50,6 +50,31 @@ db.serialize(() => {
         date DATETIME,
         FOREIGN KEY(resident_id) REFERENCES Residents(id),
         FOREIGN KEY(clerk_id) REFERENCES Users(id)
+    )`);
+
+    db.run(`CREATE TABLE IF NOT EXISTS Visitors (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        host_resident_id INTEGER,
+        time_in DATETIME,
+        time_out DATETIME,
+        clerk_id INTEGER NOT NULL,
+        FOREIGN KEY(host_resident_id) REFERENCES Residents(id),
+        FOREIGN KEY(clerk_id) REFERENCES Users(id)
+    )`);
+
+    db.run(`ALTER TABLE Residents ADD COLUMN status TEXT DEFAULT 'active'`);
+
+    db.run(`CREATE TABLE IF NOT EXISTS Audit (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        action TEXT NOT NULL,
+        table_name TEXT NOT NULL,
+        record_id INTEGER,
+        old_data TEXT,
+        new_data TEXT,
+        timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY(user_id) REFERENCES Users(id)
     )`);
 });
 
